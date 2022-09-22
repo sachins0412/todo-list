@@ -14,4 +14,20 @@ router.post("/tasks", async (req, res) => {
   }
 });
 
+router.patch("/tasks/:id", async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) return res.status(404).send("task not found");
+
+    const updates = Object.keys(req.body);
+    updates.forEach((update) => {
+      task[update] = req.body[update];
+    });
+
+    await task.save();
+    res.send(task);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
 module.exports = router;
