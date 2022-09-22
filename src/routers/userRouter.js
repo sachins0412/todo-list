@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const { User } = require("./../models/user");
+const isAuth = require("./../middlewares/isAuth");
 
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
@@ -21,6 +22,19 @@ router.post("/users/login", async (req, res) => {
     res.send({ user, token });
   } catch (e) {
     res.status(400).send(e.message);
+  }
+});
+
+router.post("/users/logout", isAuth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token != req.token;
+    });
+
+    await req.user.save();
+    res.send("Logged off successfully");
+  } catch (e) {
+    res.status(500).send(e.message);
   }
 });
 
