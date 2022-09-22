@@ -2,8 +2,9 @@
   "name": "todo-list",
   "version": "1.0.0",
   "description": "A todo-list api consisting of basic CRUD operations, JWT authentication etc with nodejs,express,mongodb",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
