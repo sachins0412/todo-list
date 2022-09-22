@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const { Task } = require("./../models/task");
+const isAuth = require("./../middlewares/isAuth");
 
-router.post("/tasks", async (req, res) => {
+router.post("/tasks", isAuth, async (req, res) => {
   const task = new Task(req.body);
 
   try {
@@ -14,7 +15,7 @@ router.post("/tasks", async (req, res) => {
   }
 });
 
-router.patch("/tasks/:id", async (req, res) => {
+router.patch("/tasks/:id", isAuth, async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
     if (!task) return res.status(404).send("task not found");
@@ -31,7 +32,7 @@ router.patch("/tasks/:id", async (req, res) => {
   }
 });
 
-router.delete("/tasks/:id", async (req, res) => {
+router.delete("/tasks/:id", isAuth, async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
 
@@ -43,7 +44,7 @@ router.delete("/tasks/:id", async (req, res) => {
   }
 });
 
-router.get("/tasks/:id", async (req, res) => {
+router.get("/tasks/:id", isAuth, async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
 
@@ -55,7 +56,7 @@ router.get("/tasks/:id", async (req, res) => {
   }
 });
 
-router.get("/tasks", async (req, res) => {
+router.get("/tasks", isAuth, async (req, res) => {
   try {
     const tasks = await Task.find();
 
