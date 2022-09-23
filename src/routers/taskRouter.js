@@ -6,7 +6,7 @@ const isAuth = require("./../middlewares/isAuth");
 
 router.post("/tasks", isAuth, async (req, res) => {
   const task = new Task(req.body);
-
+  task.owner = req.user._id;
   try {
     await task.save();
     res.status(201).send(task);
@@ -17,7 +17,10 @@ router.post("/tasks", isAuth, async (req, res) => {
 
 router.patch("/tasks/:id", isAuth, async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findOne({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
     if (!task) return res.status(404).send("task not found");
 
     const updates = Object.keys(req.body);
@@ -34,7 +37,10 @@ router.patch("/tasks/:id", isAuth, async (req, res) => {
 
 router.delete("/tasks/:id", isAuth, async (req, res) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id);
+    const task = await Task.findOneAndDelete({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
 
     if (!task) return res.status(404).send("task not found");
 
@@ -46,7 +52,10 @@ router.delete("/tasks/:id", isAuth, async (req, res) => {
 
 router.get("/tasks/:id", isAuth, async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findOne({
+      _id: req.params.id,
+      owner: req.user._id,
+    });
 
     if (!task) return res.status(404).send("task not found");
 
@@ -58,7 +67,7 @@ router.get("/tasks/:id", isAuth, async (req, res) => {
 
 router.get("/tasks", isAuth, async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({ owner: req.user._id });
 
     res.send(tasks);
   } catch (e) {
