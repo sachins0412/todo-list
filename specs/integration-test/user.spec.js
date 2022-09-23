@@ -4,6 +4,15 @@ const app = require("./../../src/app");
 const User = require("./../../src/models/user").User;
 const sinon = require("sinon");
 
+jest.mock("./../../src/middlewares/isAuth", () =>
+  jest.fn((req, res, next) => {
+    req.user = { email: "john@gmail.com", tokens: ["abcd"] };
+    req.token = "abcd";
+    req.user.save = jest.fn();
+    next();
+  })
+);
+
 describe("integration test for user", () => {
   it("should return error as mandatory fields are missing", (done) => {
     request(app)
@@ -65,6 +74,20 @@ describe("integration test for user", () => {
           done.fail();
         }
         expect(res.status).toEqual(200);
+
+        done();
+      });
+  });
+
+  it("should return 200 when user logs out", (done) => {
+    request(app)
+      .post("/users/logout")
+      .end((err, res) => {
+        if (err) {
+          done.fail();
+        }
+        expect(res.status).toEqual(200);
+        expect(res.text).toEqual("Logged off successfully");
 
         done();
       });
