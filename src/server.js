@@ -14,6 +14,6 @@ const taskRouter = require("./routers/taskRouter");
 app.use(userRouter);
 app.use(taskRouter);
 
-logger.info("starting the server on port ", PORT);
+logger.info(`starting the server on port ${PORT}`);
 
 app.listen(PORT, () => console.log("server is listening on port : ", PORT));
