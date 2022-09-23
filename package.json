@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest "
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,21 @@
     "mongoose": "^6.6.1",
     "validator": "^13.7.0",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "jest": "^29.0.3",
+    "sinon": "^14.0.0",
+    "supertest": "^6.2.4"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/*",
+      "/src/models/*"
+    ],
+    "testMatch": [
+      "**/specs/**/*.(spec|test).js"
+    ]
   }
 }
