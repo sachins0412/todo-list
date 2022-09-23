@@ -35,6 +35,10 @@
   "jest": {
     "collectCoverage": true,
     "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/*",
+      "/src/models/*"
+    ],
     "testMatch": [
       "**/specs/**/*.(spec|test).js"
     ]
