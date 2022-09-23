@@ -1,9 +1,10 @@
-const winston = require("winston");
+const { createLogger, format, transports } = require("winston");
+const { combine, timestamp, json } = format;
 
-const logger = winston.createLogger({
+const logger = createLogger({
   level: process.env.APPLOG_LEVEL,
-  format: winston.format.json(),
-  transports: new winston.transports.File({ filename: "logs/app.log" }),
+  format: combine(timestamp(), json()),
+  transports: new transports.File({ filename: "logs/app.log" }),
 });
 
 module.exports = logger;
