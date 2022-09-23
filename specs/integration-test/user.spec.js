@@ -28,7 +28,7 @@ describe("integration test for user", () => {
       });
   });
 
-  it("should return 201 after accepting current body", (done) => {
+  it("should return 201 after accepting correct body", (done) => {
     sinon.stub(User.prototype, "save").returnsThis();
     jest
       .spyOn(User.prototype, "generateAuthToken")
