@@ -1,11 +1,16 @@
 const { createLogger, format, transports } = require("winston");
+require("winston-daily-rotate-file");
 const { combine, timestamp, json } = format;
 
-let today = new Date().toISOString().split("T")[0];
+var transport = new transports.DailyRotateFile({
+  filename: "logs/app-%DATE%.log",
+  datePattern: "YYYY-MM-DD",
+});
+
 const logger = createLogger({
   level: process.env.APPLOG_LEVEL,
   format: combine(timestamp(), json()),
-  transports: new transports.File({ filename: `logs/app-${today}.log` }),
+  transports: [transport],
 });
 
 module.exports = logger;
